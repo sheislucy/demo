@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<title>OpenLayers Image Layer Example</title>
+<link rel="stylesheet" href="../css/theme/default/style.css"
+	type="text/css">
+<link rel="stylesheet" href="../css/style.css" type="text/css">
+<style type="text/css">
+p.caption {
+	width: 512px;
+}
+</style>
+<script src="../js/lib/OpenLayers.js"></script>
+<script type="text/javascript">
+	var map;
+	function init() {
+
+		//load bg picture
+		map = new OpenLayers.Map('map', {
+			projection : "EPSG:3857"
+		});
+
+		var options = {
+			numZoomLevels : 3
+		};
+
+		var graphic = new OpenLayers.Layer.Image('Dummy1',
+				'../img/Zhuoku054.jpg', new OpenLayers.Bounds(-180, -88.759,
+						180, 88.759), new OpenLayers.Size(580, 288), options);
+
+		/* graphic.events.on({
+		    loadstart: function() {
+		        OpenLayers.Console.log("loadstart");
+		    },
+		    loadend: function() {
+		        OpenLayers.Console.log("loadend");
+		    }
+		}); */
+
+		var graphic2 = new OpenLayers.Layer.Image("Dummy2",
+				"../img/Zhuoku065.jpg", new OpenLayers.Bounds(-180, -88.759,
+						180, 88.759), new OpenLayers.Size(580, 288), options);
+
+		var graphic3 = new OpenLayers.Layer.Image("Dummy3",
+				"../img/Zhuoku107.jpg", new OpenLayers.Bounds(-180, -88.759,
+						180, 88.759), new OpenLayers.Size(580, 288), options);
+
+		//TODO
+
+		var Feature = OpenLayers.Feature.Vector;
+		var Geometry = OpenLayers.Geometry;
+		var features = [
+				new Feature(new Geometry.Point(-90, 45)),
+				new Feature(new Geometry.Point(0, 45), {
+					cls : "one"
+				}),
+				new Feature(new Geometry.Point(90, 45), {
+					cls : "two"
+				}),
+				new Feature(
+						Geometry
+								.fromWKT("LINESTRING(-110 -60, -80 -40, -50 -60, -20 -40)")),
+				new Feature(
+						Geometry
+								.fromWKT("POLYGON((20 -20, 110 -20, 110 -80, 20 -80, 20 -20), (40 -40, 90 -40, 90 -60, 40 -60, 40 -40))")) ];
+
+		// create rule based styles
+		var Rule = OpenLayers.Rule;
+		var Filter = OpenLayers.Filter;
+		var style = new OpenLayers.Style({
+			pointRadius : 10,
+			strokeWidth : 3,
+			strokeOpacity : 0.7,
+			strokeColor : "navy",
+			fillColor : "#ffcc66",
+			fillOpacity : 1
+		}, {
+			rules : [ new Rule({
+				filter : new Filter.Comparison({
+					type : "==",
+					property : "cls",
+					value : "one"
+				}),
+				symbolizer : {
+					externalGraphic : "../img/marker-blue.png"
+				}
+			}), new Rule({
+				filter : new Filter.Comparison({
+					type : "==",
+					property : "cls",
+					value : "two"
+				}),
+				symbolizer : {
+					externalGraphic : "../img/marker-green.png"
+				}
+			}), new Rule({
+				elseFilter : true,
+				symbolizer : {
+					graphicName : "circle"
+				}
+			}) ]
+		});
+
+		// create the layer with listeners to create and destroy popups
+		var vector = new OpenLayers.Layer.Vector("Points", {
+			eventListeners : {
+				'featureselected' : function(evt) {
+					var feature = evt.feature;
+					var popup = new OpenLayers.Popup.FramedCloud("popup",
+							OpenLayers.LonLat.fromString(feature.geometry
+									.toShortString()), null,
+							"<div style='font-size:.8em'>Feature: "
+									+ feature.id + "<br>Foo: "
+									+ feature.attributes.foo + "</div>", null,
+							true);
+					feature.popup = popup;
+					map.addPopup(popup);
+				},
+				'featureunselected' : function(evt) {
+					var feature = evt.feature;
+					map.removePopup(feature.popup);
+					feature.popup.destroy();
+					feature.popup = null;
+				}
+			}
+		});
+		vector.addFeatures(features);
+
+		// create the select feature control
+		var selector = new OpenLayers.Control.SelectFeature(vector, {
+			hover : true,
+			autoActivate : true
+		});
+
+		//map.addLayers(osm);
+		map.addLayers([ vector, graphic, graphic2, graphic3 ]);
+		map.addControl(selector);
+		map.addControl(new OpenLayers.Control.LayerSwitcher());
+		map.zoomToMaxExtent();
+		map.setCenter(new OpenLayers.LonLat(center.x, center.y), 13);
+	}
+</script>
+</head>
+<body onload="init()">
+	<h1 id="title">Image Layer Example</h1>
+
+	<div id="tags">image, imagelayer</div>
+
+	<p id="shortdesc">Demonstrate a single non-tiled image as a
+		selectable base layer.</p>
+
+	<div id="map" class="smallmap"></div>
+
+	<div id="docs">
+		<p class="caption">The "City Lights" layer above is created from a
+			single web accessible image. If you construct it without any
+			resolution related options, the layer will be given a single
+			resolution based on the extent/size. Otherwise, it behaves much like
+			a regular layer. This is primarily intended to be used in an overview
+			map - where another layer type might not make a good overview.</p>
+	</div>
+</body>
+</html>

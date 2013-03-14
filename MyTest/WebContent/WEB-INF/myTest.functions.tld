@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<taglib version="2.0"
+    xmlns="http://java.sun.com/xml/ns/j2ee"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="
+    	http://java.sun.com/xml/ns/j2ee 
+    	http://java.sun.com/xml/ns/j2ee/web-jsptaglibrary_2_0.xsd">
+
+    <display-name>Custom Functions</display-name>    
+    <tlib-version>1.0</tlib-version>
+    <short-name>f</short-name>
+    <uri>http://myTest.net/functions</uri>
+
+    <function>
+        <name>imageUrl</name>
+        <function-class>demo.myTest.utils.WebImageUtil</function-class>
+        <function-signature>java.lang.String getImageUrl(java.lang.String)</function-signature>
+    </function>
+    <function>
+        <name>gender</name>
+        <function-class>demo.myTest.utils.DomainObjectUtil</function-class>
+        <function-signature>java.lang.String getGender(demo.myTest.constants.Gender)</function-signature>
+    </function>
+    <function>
+        <name>thirdPerson</name>
+        <function-class>demo.myTest.utils.DomainObjectUtil</function-class>
+        <function-signature>java.lang.String getThirdPerson(demo.myTest.constants.Gender)</function-signature>
+    </function>
+    <function>
+        <name>avatarUrl</name>
+        <function-class>demo.myTest.utils.DomainObjectUtil</function-class>
+        <function-signature>java.lang.String getAvatarUrl(demo.myTest.domains.Resource, demo.myTest.constants.Gender)</function-signature>
+    </function>
+    <function>
+        <name>activity</name>
+        <function-class>demo.myTest.utils.DomainObjectUtil</function-class>
+        <function-signature>java.lang.String getActivityHtml(demo.myTest.vo.ActivityVo)</function-signature>
+    </function>
+</taglib>
