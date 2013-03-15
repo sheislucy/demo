@@ -268,6 +268,7 @@ OpenLayers.Tile.Image = OpenLayers.Class(OpenLayers.Tile, {
             }
             style.visibility = "hidden";
             style.opacity = 0;
+            style.maxWidth = "none";
             if (this.layer.opacity < 1) {
                 style.filter = 'alpha(opacity=' +
                                (this.layer.opacity * 100) +

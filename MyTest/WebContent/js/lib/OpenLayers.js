@@ -82,11 +82,11 @@
         })(),
         
         _getCssLocation: (function() {
-            return (function() { return "../css/"; });
+            return (function() { return web_context + "/css/"; });
         })(),
         
         _getImgLocation: (function() {
-            return (function() { return "../img/"; });
+            return (function() { return web_context + "/img/"; });
         })(),
         
         /**
