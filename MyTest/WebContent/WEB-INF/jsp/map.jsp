@@ -8,6 +8,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Demo of XXX</title>
 <link rel="stylesheet" type="text/css"
+	href="<c:url value="/css/myMap.css" />" />
+<link rel="stylesheet" type="text/css"
 	href="<c:url value="/css/bootstrap.css" />" />
 <link rel="stylesheet" type="text/css"
 	href="<c:url value="/css/myTest-base.css" />" />
@@ -31,7 +33,7 @@
 			<jsp:param name="viewType" value="mv" />
 		</jsp:include>
 		<div id="map-view" class="board content-wrapper p-r">
-			<div id="explore-map" style="width:100%; min-height: 600px">
+			<div id="explore-map" style="width: 100%; min-height: 600px">
 				<!--	<div id="map-loading" class="p-a z-99 dis-n" style="top: 250px; width:100%">
 					<div class="bg-black ta-c br-5 c-eee fs-16 fw-b p-15" 
 						style="width:48px; height:48px; margin: 0 auto;">
@@ -69,49 +71,147 @@
 			var Vector = OpenLayers.Layer.Vector;
 			var Layer = OpenLayers.Layer;
 
+			//Point feature generator -------------start----------
+			var FeatureManager = function() {
+			};
+
+			FeatureManager.prototype.genFeature = function(coordinate) {
+				this.features = new Array();
+				for ( var i = 0, len = coordinate.length; i < len; i++) {
+					var x = coordinate[i].x;
+					var y = coordinate[i].y;
+					var feature = new Feature(new Geometry.Point(x, y));
+					this.features[i] = feature;
+				}
+			};
+
+			//Point feature generator -------------end----------
+			var featureMgr = new FeatureManager();
+
+			// map generator-----------start--------------
 			var MapManager = function() {
 
 			};
 			MapManager.prototype.genMap = function(w, h) {
 				if (!this.map) {
 					this.map = new Map('explore-map', {
-						projection : "EPSG:3857"
+					//center: new OpenLayers.LonLat(0, 0)
 					});
-					var options = {
-						numZoomLevels : 6,
-					};
-					var switcher = new OpenLayers.Control.LayerSwitcher({
-						roundedCorner : true,
-						roundedCornerColor : "#87CEFA",
-					});
-					this.map.addControl(switcher);
 				}
-				/* var graphic2 = new Image('规划平面图', web_context + '/img/Map05.jpg',
-						new OpenLayers.Bounds(-1, -1, 1, 1),
-						new OpenLayers.Size(3508, 2480), options);
+				this.map.layers = new Array();
 
-				var graphic3 = new Image('结构分析', web_context + '/img/Map06.jpg',
-						new OpenLayers.Bounds(-1, -1, 1, 1),
-						new OpenLayers.Size(3508, 2480), options); */
-				var layers = this.map.getLayersByName('土地利用总图');
-				if(layers && layers.length != 0){
-					this.map.removeLayer(layers[0]);
-				}
+				var options = {
+					numZoomLevels : 6,
+				};
 				var graphic1 = new Image('土地利用总图', web_context
 						+ '/img/Map03.jpg', new OpenLayers.Bounds(0, 0, w, h),
 						new OpenLayers.Size(w, h), options);
-				this.map.addLayers([ graphic1 ]);
+				var graphic2 = new Image('规划平面图', web_context
+						+ '/img/Map05.jpg', new OpenLayers.Bounds(0, 0, w, h),
+						new OpenLayers.Size(w, h), options);
+				var graphic3 = new Image('结构分析', web_context + '/img/Map06jpg',
+						new OpenLayers.Bounds(0, 0, w, h), new OpenLayers.Size(
+								w, h), options);
+
+				var coordinate = [ {
+					x : 326.25,
+					y : 933.96906
+				}, {
+					x : 431.25,
+					y : 680.96906
+				}, {
+					x : 551.25,
+					y : 423.96906
+				} ];
+				featureMgr.genFeature(coordinate);
+
+				var vectorLayer = new OpenLayers.Layer.Vector(
+						'pointVector-Map03', {
+							styleMap : new OpenLayers.StyleMap({
+								"default" : {
+									pointRadius : 10,
+									strokeWidth : 3,
+									srokeColor : '#9C9C9C',
+									externalGraphic : web_context
+											+ '/img/marker-gold.png'
+								},
+								select : {
+									pointRadius : 13,
+									strokeColor : "yellow",
+									strokeWidth : 3
+								}
+							}),
+						});
+				vectorLayer.addFeatures(featureMgr.features);
+
+				this.map
+						.addLayers([ graphic1, graphic2, graphic3, vectorLayer ]);
+				if (this.map.layers && this.map.layers.length > 1) {
+					var switcher = new OpenLayers.Control.LayerSwitcher({
+						roundedCorner : true,
+						roundedCornerColor : "#ADD8E6",
+					});
+					this.map.addControl(switcher);
+				}
+
 				this.map.zoomToMaxExtent();
+
+				//display coordinate of mouse position-------start------------------
+				/* this.map.addControl(new OpenLayers.Control.MousePosition());
+				this.map.events.register("mousemove", this.map, function(e) {
+					var position = this.events.getMousePosition(e);
+					OpenLayers.Util.getElement("coords").innerHTML = position;
+				}); */
+				//display coordinate of mouse position-------end------------------
+				//select points
+				var selectController = new OpenLayers.Control.SelectFeature(
+						vectorLayer, {
+							clickout : true,
+							toggle : false,
+							hover : false
+						});
+				vectorLayer.events
+						.on({
+							'featureselected' : function(evt) {
+								var feature = evt.feature;
+								var popup = new OpenLayers.Popup.FramedCloud(
+										"popup",
+										OpenLayers.LonLat
+												.fromString(feature.geometry
+														.toShortString()),
+										null,
+										"<div style='font-size:.8em'>Feature: "
+												+ feature.id
+												+ "<img src=\"" + web_context + "/img/icon_app.png" + "\">"
+												+ "<br>Summary: " + "新规划"
+												+ "</div>", null, false);
+								popup.minSize = new OpenLayers.Size(100, 50);
+								popup. = true;
+								feature.popup = popup;
+								this.map.addPopup(popup);
+							},
+							'featureunselected' : function(evt) {
+								var feature = evt.feature;
+								this.map.removePopup(feature.popup);
+								feature.popup.destroy();
+								feature.popup = null;
+							}
+						});
+
+				this.map.addControl(selectController);
+				selectController.activate();
 			};
+
+			// map generator-----------end--------------
 
 			var mapManager = new MapManager();
 
-			
 			$(window).resize(function() {
 				var map_width = $('#explore-map').innerWidth();
-				var map_height= map_width/0.707;
+				var map_height = map_width / 0.707;
 				$('#explore-map').height(map_height);
 				mapManager.genMap(map_width, map_height);
+
 			});
 
 			$(window).resize();
