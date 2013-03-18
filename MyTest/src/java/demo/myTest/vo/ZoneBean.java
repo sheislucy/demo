@@ -6,14 +6,13 @@ import java.util.List;
 
 @SuppressWarnings("serial")
 public class ZoneBean implements Serializable {
-	private List<PointBean> zone = new ArrayList<PointBean>();
+	private List<PointBean> zones = new ArrayList<PointBean>();
 
-	public List<PointBean> getZone() {
-		return zone;
+	public List<PointBean> getZones() {
+		return zones;
 	}
 
-	public void setZone(List<PointBean> zone) {
-		this.zone = zone;
+	public void setZones(List<PointBean> zones) {
+		this.zones = zones;
 	}
-
 }

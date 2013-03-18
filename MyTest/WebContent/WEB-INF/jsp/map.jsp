@@ -21,6 +21,9 @@
 	src="<c:url value="/js/jquery.1.7.1.js" />"></script>
 <script type="text/javascript"
 	src="<c:url value="/js/myTest.init.js" />"></script>
+<script type="text/javascript"
+	src="<c:url value="/js/lib/OpenLayers.js" />"></script>
+<script type="text/javascript" src="<c:url value="/js/myMap.js" />"></script>
 </head>
 <body class="front">
 	<jsp:include page="/WEB-INF/jsp/comp/header.jsp">
@@ -34,19 +37,11 @@
 		</jsp:include>
 		<div id="map-view" class="board content-wrapper p-r">
 			<div id="explore-map" style="width: 100%; min-height: 600px"></div>
-			<c:if test="${not empty mapMeta}">
-				<script>
-					alert("${mapMeta.mapName}");
-				</script>
-				<script type="text/javascript" src="<c:url value="/js/myMap.js" />"></script>
-			</c:if>
 		</div>
 	</div>
 	<script type="text/javascript">
 		adjustWebWidth();
 	</script>
-	<script type="text/javascript"
-		src="<c:url value="/js/lib/OpenLayers.js" />"></script>
 	<script type="text/javascript"
 		src="<c:url value="/js/lib/Rico/Corner.js" />"></script>
 	<script type="text/javascript" src="<c:url value="/js/myTest.op.js" />"></script>
@@ -56,35 +51,42 @@
 	<script type="text/javascript" src="<c:url value="/js/gmap3.js" />"></script>
 	<%-- <script type="text/javascript" src="<c:url value="/js/marker.overlay.js" />"></script>
 	<script type="text/javascript" src="<c:url value="/js/marker.overlay.manager.js" />"></script> --%>
+
 	<script type="text/javascript">
 		$(function() {
 			var mapManager = new MapManager();
 
-			$(window).resize(function() {
+			/* $(window).resize(function() {
 				var map_width = $('#explore-map').innerWidth();
 				var map_height = map_width / 2480 * 3508;
 				$('#explore-map').height(map_height);
 			});
 
-			$(window).resize();
+			$(window).resize(); */
 
-			var mapMeta = {};
-			mapMeta.w = "${mapMeta.originImageSize[0]}";
-			mapMeta.h = "${mapMeta.originImageSize[1]}";
-			mapMeta.mapName = "${mapMeta.mapName}";
-			mapMeta.mapImageutl = "${mapMeta.mapImageUrl}";
+			var getMapAndHotSpot = function(mapId) {
+				$.getJSON(web_context + '/map/' + mapId, function(data) {
+					if (data && data.resultCode == 'SUCCESS') {
+						var hotspotMeta = {};
+						var mapMeta = data.resultData.mapMeta;
+						hotspotMeta.points = data.resultData.points;
+						hotspotMeta.polygons = data.resultData.polygons;
 
-			var hotspotMeta = {};
-			hotspotMeta.points = new Array();
-			for ( var i = 0; i < ${'points'}.length; i++) {
-				hotspotMeta.points.push({
-					x : ${'points'}[i].xAxis,
-					y : ${'points'}[i].yAxis
+						var map_width = $('#explore-map').innerWidth();
+						var map_height = map_width / mapMeta.width
+								* mapMeta.height;
+						$('#explore-map').height(map_height);
+						mapMeta.view_width = $('#explore-map').innerWidth();
+						mapMeta.view_height = $('#explore-map').innerHeight();
+
+						mapManager.genMap(mapMeta, hotspotMeta);
+					}
 				});
-			}
+			};
+			getMapAndHotSpot("map03");
 
-			hotspotMeta.polygons = new Array();
-			for ( var i = 0; i < ${'polygons'}.length; i++) {
+			//hotspotMeta.polygons = new Array();
+			/* for ( var i = 0; i < ${'polygons'}.length; i++) {
 				var poly_org = ${'polygons'}[i];
 				var zones = new Array();
 				for ( var j = 0; j < poly_org.polygon.length; j++) {
@@ -99,9 +101,8 @@
 					zones.push(points);
 				}
 				hotspotMeta.polygons.push(zones);
-			}
+			} */
 
-			mapManager.genMap(mapMeta, hotspotMeta);
 		});
 	</script>
 	<script type="text/javascript" src="<c:url value="/js/ga.js" />"></script>

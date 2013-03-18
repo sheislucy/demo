@@ -4,31 +4,32 @@ import java.io.Serializable;
 
 @SuppressWarnings("serial")
 public class PointBean implements Serializable {
-	private double xAxis = 0.0d;
+	private double x = 0.0d;
 
-	private double yAxis = 0.0d;
+	private double y = 0.0d;
 
 	public PointBean() {
 	}
 
 	public PointBean(double x, double y) {
-		this.xAxis = x;
-		this.yAxis = y;
+		this.x = x;
+		this.y = y;
 	}
 
-	public double getxAxis() {
-		return xAxis;
+	public double getX() {
+		return x;
 	}
 
-	public void setxAxis(double xAxis) {
-		this.xAxis = xAxis;
+	public void setX(double x) {
+		this.x = x;
 	}
 
-	public double getyAxis() {
-		return yAxis;
+	public double getY() {
+		return y;
 	}
 
-	public void setyAxis(double yAxis) {
-		this.yAxis = yAxis;
+	public void setY(double y) {
+		this.y = y;
 	}
+
 }

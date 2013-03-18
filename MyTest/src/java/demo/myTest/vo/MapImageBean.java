@@ -5,12 +5,14 @@ import java.io.Serializable;
 @SuppressWarnings("serial")
 public class MapImageBean implements Serializable {
 	private String mapId;
-	
+
 	private String mapName;
-	
+
 	private String mapImageUrl;
 
-	private double[] originImageSize;
+	private double width;
+
+	private double height;
 
 	public String getMapImageUrl() {
 		return mapImageUrl;
@@ -20,12 +22,20 @@ public class MapImageBean implements Serializable {
 		this.mapImageUrl = mapImageUrl;
 	}
 
-	public double[] getOriginImageSize() {
-		return originImageSize;
+	public double getWidth() {
+		return width;
 	}
 
-	public void setOriginImageSize(double[] originImageSize) {
-		this.originImageSize = originImageSize;
+	public void setWidth(double width) {
+		this.width = width;
+	}
+
+	public double getHeight() {
+		return height;
+	}
+
+	public void setHeight(double height) {
+		this.height = height;
 	}
 
 	public String getMapId() {
