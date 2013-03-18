@@ -10,9 +10,12 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 
 import demo.myTest.constants.AjaxResultCode;
 import demo.myTest.vo.AjaxResult;
+import demo.myTest.vo.DropdownItem;
+import demo.myTest.vo.FilterElementVo;
 import demo.myTest.vo.MapImageBean;
 import demo.myTest.vo.PointBean;
 import demo.myTest.vo.PolygonBean;
@@ -22,15 +25,27 @@ import demo.myTest.vo.ZoneBean;
 public class MapController {
 
 	@RequestMapping(value = "/map", method = RequestMethod.GET)
-	public String initMap() {
-		return "map";
+	public ModelAndView initMap() {
+		ModelAndView mv = new ModelAndView();
+		List<FilterElementVo> filters = new ArrayList<FilterElementVo>();
+		FilterElementVo f = new FilterElementVo();
+		f.setType("category");
+		f.setLabel("全部");
+		f.setTypeLabel("分类");
+		f.getItems().add(new DropdownItem("map03", "土地利用总图"));
+		f.getItems().add(new DropdownItem("map05", "规划平面图"));
+		f.getItems().add(new DropdownItem("map06", "结构分析"));
+		filters.add(f);
+		mv.addObject("filters", filters);
+		mv.setViewName("map");
+		return mv;
 	}
 
 	@RequestMapping(value = "/map/{mapId}", method = RequestMethod.GET)
 	public @ResponseBody
 	AjaxResult initMapWithId(@PathVariable("mapId") String mapId) {
 		MapImageBean mim = null;
-		if (null == mapId) {
+		if ("init".equalsIgnoreCase(mapId)) {
 			mim = prepareImage("map03");
 		} else {
 			mim = prepareImage(mapId);
@@ -57,7 +72,7 @@ public class MapController {
 			mim.setMapImageUrl("/img/Map05.jpg");
 			mim.setMapName("规划平面图");
 		} else if ("map06".equalsIgnoreCase(mapId)) {
-			mim.setMapImageUrl("/img/Map03.jpg");
+			mim.setMapImageUrl("/img/Map06.jpg");
 			mim.setMapName("结构分析");
 		} else {
 			return null;
@@ -81,15 +96,15 @@ public class MapController {
 
 	private List<PolygonBean> prepareZones() {
 		List<PolygonBean> polys = new ArrayList<PolygonBean>();
-		PointBean pb = new PointBean(393.5d, 531.125d);
-		PointBean pb2 = new PointBean(426.25d, 465.125d);
-		PointBean pb3 = new PointBean(436.875d, 463.5d);
-		PointBean pb4 = new PointBean(579d, 511.875d);
-		PointBean pb5 = new PointBean(567.75d, 569.625d);
-		PointBean pb6 = new PointBean(561.5d, 575d);
-		PointBean pb7 = new PointBean(541.5d, 580d);
-		PointBean pb8 = new PointBean(516d, 605.375d);
-		PointBean pb9 = new PointBean(396.125d, 535.625d);
+		PointBean pb = new PointBean(311.84375d, 420.40625d);
+		PointBean pb2 = new PointBean(337.46875d, 368.28125d);
+		PointBean pb3 = new PointBean(345.71875d, 367.15625d);
+		PointBean pb4 = new PointBean(458.59375d, 405.90625d);
+		PointBean pb5 = new PointBean(449.34375d, 451.40625d);
+		PointBean pb6 = new PointBean(443.96875d, 455.53125d);
+		PointBean pb7 = new PointBean(428.84375d, 459.88125d);
+		PointBean pb8 = new PointBean(408.96875d, 479.53125d);
+		PointBean pb9 = new PointBean(313.34375d, 423.78125d);
 
 		ZoneBean zone = new ZoneBean();
 		zone.getZones().add(pb);

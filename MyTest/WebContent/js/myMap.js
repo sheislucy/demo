@@ -79,8 +79,9 @@ MapManager.prototype.genMap = function(mapMeta, hotspotMeta) {
 	};
 	var graphic1 = new Image(mapMeta.mapName,
 			web_context + mapMeta.mapImageUrl, new OpenLayers.Bounds(0, 0,
-					mapMeta.view_width, mapMeta.view_height), new OpenLayers.Size(
-					mapMeta.view_width, mapMeta.view_height), options);
+					mapMeta.view_width, mapMeta.view_height),
+			new OpenLayers.Size(mapMeta.view_width, mapMeta.view_height),
+			options);
 	/*
 	 * var graphic2 = new Image('规划平面图', web_context + '/img/Map05.jpg', new
 	 * OpenLayers.Bounds(0, 0, w, h), new OpenLayers.Size(w, h), options); var
@@ -101,10 +102,6 @@ MapManager.prototype.genMap = function(mapMeta, hotspotMeta) {
 
 	var ct = new CoordinateTranslator();
 
-	/*
-	 * [ ct.transalate(324.5, 923.065), ct.transalate(433.5625, 673.875),
-	 * ct.transalate(553.25, 422.96875) ];
-	 */
 	var points = new Array();
 	if (hotspotMeta.points && hotspotMeta.points.length > 0) {
 		for ( var i = 0; i < hotspotMeta.points.length; i++) {
@@ -233,11 +230,12 @@ MapManager.prototype.genMap = function(mapMeta, hotspotMeta) {
 	this.map.zoomToMaxExtent();
 
 	// display coordinate of mouse position-------start------------------
-	this.map.addControl(new OpenLayers.Control.MousePosition());
-	this.map.events.register("mousemove", this.map, function(e) {
-		var position = this.events.getMousePosition(e);
-		// OpenLayers.Util.getElement("coords").innerHTML = position;
-	});
+	/*
+	 * this.map.addControl(new OpenLayers.Control.MousePosition());
+	 * this.map.events.register("mousemove", this.map, function(e) { var
+	 * position = this.events.getMousePosition(e);
+	 * OpenLayers.Util.getElement("coords").innerHTML = position; });
+	 */
 	// display coordinate of mouse position-------end------------------
 	// select points
 	var selectController = new OpenLayers.Control.SelectFeature(vectorLayer, {
@@ -268,20 +266,27 @@ MapManager.prototype.genMap = function(mapMeta, hotspotMeta) {
 		}
 	});
 
-	// this.map.addControl(selectController);
-	// selectController.activate();
+	this.map.addControl(selectController);
+	selectController.activate();
 };
 
 // map generator-----------end--------------
+var getMapAndHotSpot = function(mapId) {
+	$.getJSON(web_context + '/map/' + mapId, function(data) {
+		if (data && data.resultCode == 'SUCCESS') {
+			$('#explore-map').html("");
+			var hotspotMeta = {};
+			var mapMeta = data.resultData.mapMeta;
+			hotspotMeta.points = data.resultData.points;
+			hotspotMeta.polygons = data.resultData.polygons;
 
-/*
- * var mapManager = new MapManager();
- * 
- * $(window).resize(function() { var map_width = $('#explore-map').innerWidth();
- * var map_height = map_width / 2480 * 3508;
- * $('#explore-map').height(map_height); });
- * 
- * $(window).resize(); mapManager.genMap($('#explore-map').innerWidth(),
- * $('#explore-map') .innerHeight());
- */
-
+			var map_width = $('#explore-map').innerWidth();
+			var map_height = map_width / mapMeta.width * mapMeta.height;
+			$('#explore-map').height(map_height);
+			mapMeta.view_width = $('#explore-map').innerWidth();
+			mapMeta.view_height = $('#explore-map').innerHeight();
+			var mapManager = new MapManager();
+			mapManager.genMap(mapMeta, hotspotMeta);
+		}
+	});
+};

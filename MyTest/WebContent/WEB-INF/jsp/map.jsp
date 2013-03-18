@@ -36,7 +36,11 @@
 			<jsp:param name="viewType" value="mv" />
 		</jsp:include>
 		<div id="map-view" class="board content-wrapper p-r">
-			<div id="explore-map" style="width: 100%; min-height: 600px"></div>
+			<div id="explore-map" style="width: 100%; min-height: 600px">
+				<script type="text/javascript">
+					getMapAndHotSpot("init");
+				</script>
+			</div>
 		</div>
 	</div>
 	<script type="text/javascript">
@@ -49,62 +53,7 @@
 	<script type="text/javascript"
 		src="http://maps.google.com/maps/api/js?sensor=false&language=zh_cn"></script>
 	<script type="text/javascript" src="<c:url value="/js/gmap3.js" />"></script>
-	<%-- <script type="text/javascript" src="<c:url value="/js/marker.overlay.js" />"></script>
-	<script type="text/javascript" src="<c:url value="/js/marker.overlay.manager.js" />"></script> --%>
 
-	<script type="text/javascript">
-		$(function() {
-			var mapManager = new MapManager();
-
-			/* $(window).resize(function() {
-				var map_width = $('#explore-map').innerWidth();
-				var map_height = map_width / 2480 * 3508;
-				$('#explore-map').height(map_height);
-			});
-
-			$(window).resize(); */
-
-			var getMapAndHotSpot = function(mapId) {
-				$.getJSON(web_context + '/map/' + mapId, function(data) {
-					if (data && data.resultCode == 'SUCCESS') {
-						var hotspotMeta = {};
-						var mapMeta = data.resultData.mapMeta;
-						hotspotMeta.points = data.resultData.points;
-						hotspotMeta.polygons = data.resultData.polygons;
-
-						var map_width = $('#explore-map').innerWidth();
-						var map_height = map_width / mapMeta.width
-								* mapMeta.height;
-						$('#explore-map').height(map_height);
-						mapMeta.view_width = $('#explore-map').innerWidth();
-						mapMeta.view_height = $('#explore-map').innerHeight();
-
-						mapManager.genMap(mapMeta, hotspotMeta);
-					}
-				});
-			};
-			getMapAndHotSpot("map03");
-
-			//hotspotMeta.polygons = new Array();
-			/* for ( var i = 0; i < ${'polygons'}.length; i++) {
-				var poly_org = ${'polygons'}[i];
-				var zones = new Array();
-				for ( var j = 0; j < poly_org.polygon.length; j++) {
-					var zones_org = poly_org.polygon[j];
-					var points = new Array();
-					for ( var k = 0; k < zones_org.length; k++) {
-						points.push({
-							x : zones_org[k].xAxis,
-							y : zones_org[k].yAxis
-						});
-					}
-					zones.push(points);
-				}
-				hotspotMeta.polygons.push(zones);
-			} */
-
-		});
-	</script>
 	<script type="text/javascript" src="<c:url value="/js/ga.js" />"></script>
 </body>
 </html>
