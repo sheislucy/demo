@@ -8,25 +8,23 @@
 		<div class="p-5 f-l fs-16">
 			<span>新XX建设：</span>
 		</div>
-		<form id="spot-search" class="navbar-search mt-0" action="">
-			<c:forEach var="filter" items="${filters}">
-				<c:choose>
-					<c:when test="${filter.type eq 'category'}">
-						<div class="btn-group ${filter.type} bin fs-14 mr-10 f-l">
-							<a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
-								<span class="c-666">${filter.typeLabel}:</span> <strong>${filter.label}</strong>
-								<b class="caret"></b>
-							</a>
-							<ul class="dropdown-menu">
-								<c:forEach var="item" items="${filter.items}">
-									<li><a href="#" data-value="${item.id}">${item.name}</a></li>
-								</c:forEach>
-							</ul>
-						</div>
-					</c:when>
-				</c:choose>
-			</c:forEach>
-		</form>
+		<c:forEach var="filter" items="${filters}">
+			<c:choose>
+				<c:when test="${filter.type eq 'category'}">
+					<div class="btn-group ${filter.type} bin fs-14 mr-10 f-l">
+						<a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
+							<span class="c-666">${filter.typeLabel}:</span> <strong>${filter.label}</strong>
+							<b class="caret"></b>
+						</a>
+						<ul class="dropdown-menu">
+							<c:forEach var="item" items="${filter.items}">
+								<li><a href="#" data-value="${item.id}">${item.name}</a></li>
+							</c:forEach>
+						</ul>
+					</div>
+				</c:when>
+			</c:choose>
+		</c:forEach>
 	</div>
 	<div class="span2 view-t">
 		<div class="btn-group f-r" data-toggle="buttons-radio">
@@ -52,16 +50,12 @@
 			var p_container = $(this).parents('.btn-group.category');
 			var s_label = p_container.find('a strong');
 			s_label.text($(this).text());
-			
+
 			$('#explore-map').html("<p>Loading...</p>");
 			getMapAndHotSpot(data_value);
-			
+
 		});
 
-		$('#spot-search').on('submit', function() {
-			
-			
-		});
 		$('.view-t button').click(function() {
 			var href = $(this).attr('data-href');
 			window.location.href = href;

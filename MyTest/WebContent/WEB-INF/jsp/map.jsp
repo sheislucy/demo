@@ -24,6 +24,7 @@
 <script type="text/javascript"
 	src="<c:url value="/js/lib/OpenLayers.js" />"></script>
 <script type="text/javascript" src="<c:url value="/js/myMap.js" />"></script>
+<script type="text/javascript" src="<c:url value="/js/myMarker.js" />"></script>
 </head>
 <body class="front">
 	<jsp:include page="/WEB-INF/jsp/comp/header.jsp">
@@ -50,10 +51,5 @@
 		src="<c:url value="/js/lib/Rico/Corner.js" />"></script>
 	<script type="text/javascript" src="<c:url value="/js/myTest.op.js" />"></script>
 	<script type="text/javascript" src="<c:url value="/js/bootstrap.js" />"></script>
-	<script type="text/javascript"
-		src="http://maps.google.com/maps/api/js?sensor=false&language=zh_cn"></script>
-	<script type="text/javascript" src="<c:url value="/js/gmap3.js" />"></script>
-
-	<script type="text/javascript" src="<c:url value="/js/ga.js" />"></script>
 </body>
 </html>

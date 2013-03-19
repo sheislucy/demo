@@ -25,7 +25,7 @@ import demo.myTest.vo.ZoneBean;
 public class MapController {
 
 	@RequestMapping(value = "/map", method = RequestMethod.GET)
-	public ModelAndView initMap() {
+	public ModelAndView initMapPage() {
 		ModelAndView mv = new ModelAndView();
 		List<FilterElementVo> filters = new ArrayList<FilterElementVo>();
 		FilterElementVo f = new FilterElementVo();
@@ -43,19 +43,15 @@ public class MapController {
 
 	@RequestMapping(value = "/map/{mapId}", method = RequestMethod.GET)
 	public @ResponseBody
-	AjaxResult initMapWithId(@PathVariable("mapId") String mapId) {
-		MapImageBean mim = null;
+	AjaxResult initMapWithHotSpot(@PathVariable("mapId") String mapId) {
+		Map<String, Object> jsonMap = new HashMap<String, Object>();
 		if ("init".equalsIgnoreCase(mapId)) {
-			mim = prepareImage("map03");
-		} else {
-			mim = prepareImage(mapId);
+			mapId = "map03";
 		}
 
-		Map<String, Object> jsonMap = new HashMap<String, Object>();
-
-		jsonMap.put("mapMeta", mim);
-		jsonMap.put("points", prepatePoints());
-		jsonMap.put("polygons", prepareZones());
+		jsonMap.put("mapMeta", prepareImage(mapId));
+		jsonMap.put("points", prepatePoints(mapId));
+		jsonMap.put("polygons", prepareZones(mapId));
 		AjaxResult ar = new AjaxResult();
 		ar.setResultCode(AjaxResultCode.SUCCESS);
 		ar.setResultData(jsonMap);
@@ -83,43 +79,47 @@ public class MapController {
 		return mim;
 	}
 
-	private List<PointBean> prepatePoints() {
+	private List<PointBean> prepatePoints(String mapId) {
 		List<PointBean> points = new ArrayList<PointBean>();
-		PointBean pb = new PointBean(324.5d, 923.065d);
-		PointBean pb2 = new PointBean(433.5625d, 673.875d);
-		PointBean pb3 = new PointBean(553.25d, 422.96875d);
-		points.add(pb);
-		points.add(pb2);
-		points.add(pb3);
+		if ("map03".equalsIgnoreCase(mapId)) {
+			PointBean pb = new PointBean(324.5d, 923.065d);
+			PointBean pb2 = new PointBean(433.5625d, 673.875d);
+			PointBean pb3 = new PointBean(553.25d, 422.96875d);
+			points.add(pb);
+			points.add(pb2);
+			points.add(pb3);
+		}
 		return points;
 	}
 
-	private List<PolygonBean> prepareZones() {
+	private List<PolygonBean> prepareZones(String mapId) {
 		List<PolygonBean> polys = new ArrayList<PolygonBean>();
-		PointBean pb = new PointBean(311.84375d, 420.40625d);
-		PointBean pb2 = new PointBean(337.46875d, 368.28125d);
-		PointBean pb3 = new PointBean(345.71875d, 367.15625d);
-		PointBean pb4 = new PointBean(458.59375d, 405.90625d);
-		PointBean pb5 = new PointBean(449.34375d, 451.40625d);
-		PointBean pb6 = new PointBean(443.96875d, 455.53125d);
-		PointBean pb7 = new PointBean(428.84375d, 459.88125d);
-		PointBean pb8 = new PointBean(408.96875d, 479.53125d);
-		PointBean pb9 = new PointBean(313.34375d, 423.78125d);
+		if ("map03".equalsIgnoreCase(mapId)) {
+			PointBean pb = new PointBean(311.84375d, 420.40625d);
+			PointBean pb2 = new PointBean(337.46875d, 368.28125d);
+			PointBean pb3 = new PointBean(345.71875d, 367.15625d);
+			PointBean pb4 = new PointBean(458.59375d, 405.90625d);
+			PointBean pb5 = new PointBean(449.34375d, 451.40625d);
+			PointBean pb6 = new PointBean(443.96875d, 455.53125d);
+			PointBean pb7 = new PointBean(428.84375d, 459.88125d);
+			PointBean pb8 = new PointBean(408.96875d, 479.53125d);
+			PointBean pb9 = new PointBean(313.34375d, 423.78125d);
 
-		ZoneBean zone = new ZoneBean();
-		zone.getZones().add(pb);
-		zone.getZones().add(pb2);
-		zone.getZones().add(pb3);
-		zone.getZones().add(pb4);
-		zone.getZones().add(pb5);
-		zone.getZones().add(pb6);
-		zone.getZones().add(pb7);
-		zone.getZones().add(pb8);
-		zone.getZones().add(pb9);
+			ZoneBean zone = new ZoneBean();
+			zone.getZones().add(pb);
+			zone.getZones().add(pb2);
+			zone.getZones().add(pb3);
+			zone.getZones().add(pb4);
+			zone.getZones().add(pb5);
+			zone.getZones().add(pb6);
+			zone.getZones().add(pb7);
+			zone.getZones().add(pb8);
+			zone.getZones().add(pb9);
 
-		PolygonBean poly = new PolygonBean();
-		poly.getPolygon().add(zone);
-		polys.add(poly);
+			PolygonBean poly = new PolygonBean();
+			poly.getPolygon().add(zone);
+			polys.add(poly);
+		}
 		return polys;
 	}
 }

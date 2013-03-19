@@ -82,21 +82,19 @@ MapManager.prototype.genMap = function(mapMeta, hotspotMeta) {
 					mapMeta.view_width, mapMeta.view_height),
 			new OpenLayers.Size(mapMeta.view_width, mapMeta.view_height),
 			options);
-	/*
-	 * var graphic2 = new Image('规划平面图', web_context + '/img/Map05.jpg', new
-	 * OpenLayers.Bounds(0, 0, w, h), new OpenLayers.Size(w, h), options); var
-	 * graphic3 = new Image('结构分析', web_context + '/img/Map06jpg', new
-	 * OpenLayers.Bounds(0, 0, w, h), new OpenLayers.Size(w, h), options);
-	 */
 
 	var CoordinateTranslator = function() {
 		this.coo = {};
 	};
 
-	CoordinateTranslator.prototype.transalate = function(minBase_x, minBase_y) {
+	CoordinateTranslator.prototype.translate = function(minBase_x, minBase_y) {
 		this.coo = {};
-		this.coo.x = minBase_x * mapMeta.view_width / 903;
-		this.coo.y = minBase_y * mapMeta.view_height / 1277.3080645161292;
+		this.coo.x = minBase_x * mapMeta.view_width / 903; // minimum width of
+		// div#explore-map
+		this.coo.y = minBase_y * mapMeta.view_height / 1277.3080645161292; // minimum
+		// height
+		// of
+		// div#explore-map
 		return this.coo;
 	};
 
@@ -105,7 +103,7 @@ MapManager.prototype.genMap = function(mapMeta, hotspotMeta) {
 	var points = new Array();
 	if (hotspotMeta.points && hotspotMeta.points.length > 0) {
 		for ( var i = 0; i < hotspotMeta.points.length; i++) {
-			points.push(ct.transalate(hotspotMeta.points[i].x,
+			points.push(ct.translate(hotspotMeta.points[i].x,
 					hotspotMeta.points[i].y));
 		}
 	}
@@ -122,7 +120,7 @@ MapManager.prototype.genMap = function(mapMeta, hotspotMeta) {
 				var zones = polygon.polygon[j];
 				for ( var k = 0; k < zones.zones.length; k++) {
 					// one point coordinate here
-					coordinates_con.push(ct.transalate(zones.zones[k].x,
+					coordinates_con.push(ct.translate(zones.zones[k].x,
 							zones.zones[k].y));
 				}
 				zones_con.push(coordinates_con);
@@ -246,13 +244,12 @@ MapManager.prototype.genMap = function(mapMeta, hotspotMeta) {
 	vectorLayer.events.on({
 		'featureselected' : function(evt) {
 			var feature = evt.feature;
-			var popup = new OpenLayers.Popup.FramedCloud("popup",
-					OpenLayers.LonLat.fromString(feature.geometry
-							.toShortString()), null,
-					"<div style='font-size:.8em'>Feature: " + feature.id
+			var popup = new MyMarker("myPopup", OpenLayers.LonLat
+					.fromString(feature.geometry.toShortString()), null,
+					"<div style='font-size:.8em;'>Feature: " + feature.id
 							+ "<img src=\"" + web_context + "/img/icon_app.png"
 							+ "\">" + "<br>Summary: " + "新规划" + "</div>", null,
-					false);
+					false, null, "map-shadow.png");
 			popup.minSize = new OpenLayers.Size(100, 50);
 			popup.autoSize = true;
 			feature.popup = popup;

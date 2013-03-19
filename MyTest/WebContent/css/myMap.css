@@ -1,4 +1,11 @@
 @CHARSET "UTF-8";
+
 div.olPopup {
 	opacity: 0.8;
+	/** background-image: url("../img/map-shadow.png");
+	background-repeat: no-repeat;**/
+}
+
+div#myPopup_GroupDiv {
+	
 }
