@@ -148,12 +148,12 @@ MapManager.prototype.genMap = function(mapMeta, hotspotMeta) {
 				value : "pointDefault"
 			}),
 			symbolizer : {
-				pointRadius : 10,
+				pointRadius : 20,
 				strokeWidth : 2,
 				srokeColor : '#9C9C9C',
-				externalGraphic : web_context + '/img/marker-gold.png',
-				graphicXOffset : -10,
-				graphicYOffset : -20
+				externalGraphic : web_context + '/img/material/a17.png',
+				graphicXOffset : -2,
+				graphicYOffset : -38
 			}
 		}), new Rule({
 			filter : new Filter.Comparison({
@@ -184,12 +184,12 @@ MapManager.prototype.genMap = function(mapMeta, hotspotMeta) {
 				value : "pointDefault"
 			}),
 			symbolizer : {
-				pointRadius : 13,
+				pointRadius : 24,
 				strokeWidth : 2,
 				srokeColor : '#9C9C9C',
-				externalGraphic : web_context + '/img/marker-gold.png',
-				graphicXOffset : -10,
-				graphicYOffset : -20
+				externalGraphic : web_context + '/img/material/a17.png',
+				graphicXOffset : -2,
+				graphicYOffset : -45
 			}
 		}), new Rule({
 			filter : new Filter.Comparison({
@@ -207,7 +207,7 @@ MapManager.prototype.genMap = function(mapMeta, hotspotMeta) {
 		}) ]
 	});
 
-	var vectorLayer = new OpenLayers.Layer.Vector('pointVector-Map03', {
+	var vectorLayer = new OpenLayers.Layer.Vector(mapMeta.mapName, {
 		styleMap : new OpenLayers.StyleMap({
 			"default" : defaultStyle,
 			"select" : selectStyle
@@ -245,12 +245,15 @@ MapManager.prototype.genMap = function(mapMeta, hotspotMeta) {
 		'featureselected' : function(evt) {
 			var feature = evt.feature;
 			var popup = new MyMarker("myPopup", OpenLayers.LonLat
-					.fromString(feature.geometry.toShortString()), null,
+					.fromString(feature.geometry.toShortString()), new OpenLayers.Size(287, 150.5),
 					"<div style='font-size:.8em;'>Feature: " + feature.id
-							+ "<img src=\"" + web_context + "/img/icon_app.png"
-							+ "\">" + "<br>Summary: " + "新规划" + "</div>", null,
-					false, null, "map-shadow.png");
-			popup.minSize = new OpenLayers.Size(100, 50);
+							+ "<img src='" + web_context
+							+ "/img/thumbnail01.jpg'" + " width='" + 80
+							+ "' height='" + 80 + "' >" + "<br>Summary: "
+							+ "新规划" + "</div>", null, false, null, web_context
+							+ "/img/material/note.png");
+			popup.minSize = new OpenLayers.Size(459.8, 240.8);
+			//popup.maxSize = new OpenLayers.Size(574, 301);
 			popup.autoSize = true;
 			feature.popup = popup;
 			this.map.addPopup(popup);

@@ -1,14 +1,16 @@
 MyMarker = OpenLayers.Class(OpenLayers.Popup.FramedCloud, {
-
+	
 	initialize : function(id, lonlat, contentSize, contentHTML, anchor,
 			closeBox, closeBoxCallback, imageUrl) {
-		this.imageSrc = OpenLayers.Util.getImageLocation(imageUrl);
+		this.imageSrc = imageUrl;
 		OpenLayers.Popup.Framed.prototype.initialize.apply(this, arguments);
 		this.contentDiv.className = this.contentDisplayClass;
 	},
 
 	CLASS_NAME : "MyMarker"
 });
+
+MyMarker.prototype.imageSize = new OpenLayers.Size(574, 301);
 
 MyMarker.prototype.createBlocks = function() {
 	this.blocks = [];
@@ -41,3 +43,7 @@ MyMarker.prototype.updateBlocks = function() {
         this.contentDiv.style.top = this.padding.top + "px";
 	}
 };
+
+/*MyMarker.prototype.updateSize = function(){
+	this.setSize(this.contentSize); 
+};*/
