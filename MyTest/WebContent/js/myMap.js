@@ -245,14 +245,14 @@ MapManager.prototype.genMap = function(mapMeta, hotspotMeta) {
 		'featureselected' : function(evt) {
 			var feature = evt.feature;
 			var popup = new MyMarker("myPopup", OpenLayers.LonLat
-					.fromString(feature.geometry.toShortString()), new OpenLayers.Size(287, 150.5),
+					.fromString(feature.geometry.toShortString()), new OpenLayers.Size(459.2, 260),
 					"<div style='font-size:.8em;'>Feature: " + feature.id
 							+ "<img src='" + web_context
 							+ "/img/thumbnail01.jpg'" + " width='" + 80
 							+ "' height='" + 80 + "' >" + "<br>Summary: "
 							+ "新规划" + "</div>", null, false, null, web_context
 							+ "/img/material/note.png");
-			popup.minSize = new OpenLayers.Size(459.8, 240.8);
+			popup.minSize = new OpenLayers.Size(459.2, 240.8);
 			//popup.maxSize = new OpenLayers.Size(574, 301);
 			popup.autoSize = true;
 			feature.popup = popup;
