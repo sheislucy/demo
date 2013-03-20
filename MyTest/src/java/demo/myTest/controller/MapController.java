@@ -73,6 +73,7 @@ public class MapController {
 		} else {
 			return null;
 		}
+		mim.setMapId(mapId);
 		mim.setWidth(2480d);
 		mim.setHeight(3508d);
 
@@ -82,9 +83,9 @@ public class MapController {
 	private List<PointBean> prepatePoints(String mapId) {
 		List<PointBean> points = new ArrayList<PointBean>();
 		if ("map03".equalsIgnoreCase(mapId)) {
-			PointBean pb = new PointBean(324.5d, 923.065d);
-			PointBean pb2 = new PointBean(433.5625d, 673.875d);
-			PointBean pb3 = new PointBean(553.25d, 422.96875d);
+			PointBean pb = new PointBean(324.5d, 923.065d, "feature01");
+			PointBean pb2 = new PointBean(433.5625d, 673.875d, "feature02");
+			PointBean pb3 = new PointBean(553.25d, 422.96875d, "feature03");
 			points.add(pb);
 			points.add(pb2);
 			points.add(pb3);
@@ -118,6 +119,7 @@ public class MapController {
 
 			PolygonBean poly = new PolygonBean();
 			poly.getPolygon().add(zone);
+			poly.setFeatureId("poly01");
 			polys.add(poly);
 		}
 		return polys;

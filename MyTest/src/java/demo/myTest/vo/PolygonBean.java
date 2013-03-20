@@ -6,6 +6,8 @@ import java.util.List;
 
 @SuppressWarnings("serial")
 public class PolygonBean implements Serializable {
+	private String featureId;
+
 	private List<ZoneBean> polygon = new ArrayList<ZoneBean>();
 
 	public List<ZoneBean> getPolygon() {
@@ -14,6 +16,14 @@ public class PolygonBean implements Serializable {
 
 	public void setPolygon(List<ZoneBean> polygon) {
 		this.polygon = polygon;
+	}
+
+	public String getFeatureId() {
+		return featureId;
+	}
+
+	public void setFeatureId(String featureId) {
+		this.featureId = featureId;
 	}
 
 }

@@ -10,7 +10,7 @@ MyMarker = OpenLayers.Class(OpenLayers.Popup.FramedCloud, {
 	CLASS_NAME : "MyMarker"
 });
 
-MyMarker.prototype.imageSize = new OpenLayers.Size(574, 301);
+MyMarker.prototype.imageSize = new OpenLayers.Size(300, 220);
 
 MyMarker.prototype.createBlocks = function() {
 	this.blocks = [];
@@ -54,9 +54,9 @@ MyMarker.prototype.updateBlocks = function() {
 		block.div.style.width = (w < 0 ? 0 : w) + 'px';
 		block.div.style.height = (h < 0 ? 0 : h) + 'px';
 
-		block.div.style.left = -70 + (l != null) ? l + 'px' : '';
+		block.div.style.left = (l != null) ? l + 'px' : '';
 		block.div.style.bottom = (b != null) ? b + 'px' : '';
-		block.div.style.right = -40 + (r != null) ? r + 'px' : '';
+		block.div.style.right = (r != null) ? r + 'px' : '';
 		block.div.style.top = (t != null) ? t + 'px' : '';
 
 		block.image.style.left = positionBlock.position.x + 'px';
@@ -64,6 +64,14 @@ MyMarker.prototype.updateBlocks = function() {
 
 		this.contentDiv.style.left = this.padding.left + "px";
 		this.contentDiv.style.top = this.padding.top + "px";
+
+		var offsetTop = this.div.style.top;
+		offsetTop = offsetTop.replace('px', '');
+		this.div.style.top = offsetTop - 20 + 'px';
+		
+		block.image.style.width = block.div.style.width;
+		block.image.style.height = block.div.style.height;
+		block.image.style.opacity = 0.8;
 	}
 };
 

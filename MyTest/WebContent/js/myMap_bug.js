@@ -16,6 +16,8 @@ FeatureManager.prototype.genPoints = function(coordinates) {
 		var y = coordinates[i].y;
 		var feature = new Feature(new Geometry.Point(x, y), {
 			styleClass : "pointDefault"
+		}, {
+			dbFeatureId : coordinates[i].featureId
 		});
 		features.push(feature);
 	}
@@ -27,7 +29,7 @@ FeatureManager.prototype.genPoints = function(coordinates) {
  * 
  * @returns {Array}
  */
-FeatureManager.prototype.genPolygon = function(zones) {
+FeatureManager.prototype.genPolygon = function(zones, featureId) {
 	var lonlatStr = "POLYGON(";
 	for ( var i = 0; i < zones.length; i++) {
 		var zone = zones[i];
@@ -48,6 +50,8 @@ FeatureManager.prototype.genPolygon = function(zones) {
 	lonlatStr += ")";
 	var polygon = new Feature(Geometry.fromWKT(lonlatStr), {
 		styleClass : "zoneDefault"
+	}, {
+		dbFeatureId : featureId
 	});
 	return polygon;
 };
@@ -60,6 +64,8 @@ var MapManager = function() {
 
 };
 
+var dbMapId = "";
+
 /**
  * mapMeta:{ width:"", height:"", mapName:"", mapImageUrl:"", }
  * 
@@ -69,6 +75,7 @@ MapManager.prototype.genMap = function(mapMeta, hotspotMeta) {
 	if (this.map) {
 		this.map.destroy();
 	}
+	dbMapId = mapMeta.mapId;
 	this.map = new Map('explore-map', {
 		projection : "EPSG:3857",
 	});
@@ -103,8 +110,10 @@ MapManager.prototype.genMap = function(mapMeta, hotspotMeta) {
 	var points = new Array();
 	if (hotspotMeta.points && hotspotMeta.points.length > 0) {
 		for ( var i = 0; i < hotspotMeta.points.length; i++) {
-			points.push(ct.translate(hotspotMeta.points[i].x,
-					hotspotMeta.points[i].y));
+			var point = ct.translate(hotspotMeta.points[i].x,
+					hotspotMeta.points[i].y);
+			point.featureId = hotspotMeta.points[i].featureId;
+			points.push(point);
 		}
 	}
 
@@ -125,12 +134,14 @@ MapManager.prototype.genMap = function(mapMeta, hotspotMeta) {
 				}
 				zones_con.push(coordinates_con);
 			}
+			zones_con.featureId = polygon.featureId;
 			polygons_con.push(zones_con);
 		}
 	}
 	var polygonFeatures = new Array();
 	for ( var i = 0; i < polygons_con.length; i++) {
-		polygonFeatures.push(featureMgr.genPolygon(polygons_con[i]));
+		polygonFeatures.push(featureMgr.genPolygon(polygons_con[i],
+				polygons_con[i].featureId));
 	}
 
 	var defaultStyle = new OpenLayers.Style({
@@ -263,6 +274,13 @@ var hideMarker = function(evt) {
 	feature.popup = null;
 };
 
+/**
+ * "<div style='font-size:.8em;'>唱响社会主义大丰收: " + "<img src='" + web_context +
+ * "/img/demoScene03.jpg'" + " width='" + 104 + "' height='" + 75 + "' >" + "
+ * <p>
+ * 摘要: " + "规划中的梯田啊啊啊
+ * </p>" + "</div>"
+ */
 var showMarker = function(evt) {
 	var feature = evt.feature;
 	var lonlat;
@@ -270,18 +288,21 @@ var showMarker = function(evt) {
 	if (feature.geometry instanceof Geometry.Point) {
 		lonlat = OpenLayers.LonLat.fromString(feature.geometry.toShortString());
 	} else {
-		lonlat = new OpenLayers.LonLat(mouseLonlatOnClick.lon, mouseLonlatOnClick.lat);
+		lonlat = new OpenLayers.LonLat(mouseLonlatOnClick.lon,
+				mouseLonlatOnClick.lat);
 	}
-	var popup = new MyMarker("myPopup", lonlat, new OpenLayers.Size(260, 180),
-			"<div style='font-size:.8em;'>唱响社会主义大丰收: " + "<img src='"
-					+ web_context + "/img/demoScene03.jpg'" + " width='" + 104
-					+ "' height='" + 75 + "' >" + "<p>摘要: " + "规划中的梯田啊啊啊</p>"
-					+ "</div>", null, false, null, web_context
+	$.getJSON(web_context + '/map/' + dbMapId + "/feature"
+			+ feature.data.dbFeatureId + "/marker", function(data) {
+		if (data && data.resultCode == 'SUCCESS') {
+			var popup = new MyMarker("myPopup", lonlat, new OpenLayers.Size(
+					260, 180), data.resultData, null, false, null, web_context
 					+ "/img/material/marker02.png");
-	popup.minSize = new OpenLayers.Size(260, 180);
-	popup.autoSize = true;
-	feature.popup = popup;
-	this.map.addPopup(popup);
+			popup.minSize = new OpenLayers.Size(260, 180);
+			popup.autoSize = true;
+			feature.popup = popup;
+			this.map.addPopup(popup);
+		}
+	});
 };
 
 // map generator-----------end--------------
