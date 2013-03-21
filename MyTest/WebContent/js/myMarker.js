@@ -51,7 +51,7 @@ MyMarker.prototype.updateBlocks = function() {
 		var h = (isNaN(positionBlock.size.h)) ? this.size.h - (b + t)
 				: positionBlock.size.h;
 
-		block.div.style.width = (w < 0 ? 0 : w) + 'px';
+		block.div.style.width = (w < 0 ? 0 : w) + 10 + 'px';
 		block.div.style.height = (h < 0 ? 0 : h) + 'px';
 
 		block.div.style.left = (l != null) ? l + 'px' : '';
@@ -65,16 +65,111 @@ MyMarker.prototype.updateBlocks = function() {
 		this.contentDiv.style.left = this.padding.left + "px";
 		this.contentDiv.style.top = this.padding.top + "px";
 
-		var offsetTop = this.div.style.top;
-		offsetTop = offsetTop.replace('px', '');
-		this.div.style.top = offsetTop - 20 + 'px';
-		
 		block.image.style.width = block.div.style.width;
 		block.image.style.height = block.div.style.height;
 		block.image.style.opacity = 0.8;
 	}
 };
 
-/*
- * MyMarker.prototype.updateSize = function(){ this.setSize(this.contentSize); };
- */
+MyMarker.prototype.positionBlocks = {
+	"tl" : {
+		'offset' : new OpenLayers.Pixel(44, 0),
+		'padding' : new OpenLayers.Bounds(12, 20, 4, 8),
+		'blocks' : [ { // top-left
+			size : new OpenLayers.Size('auto', 'auto'),
+			anchor : new OpenLayers.Bounds(0, 26, 11, 0),
+			position : new OpenLayers.Pixel(0, 0)
+		}, { // top-right
+			size : new OpenLayers.Size(22, 'auto'),
+			anchor : new OpenLayers.Bounds(null, 25, 0, 0),
+			position : new OpenLayers.Pixel(-1238, 0)
+		}, { // bottom-left
+			size : new OpenLayers.Size('auto', 19),
+			anchor : new OpenLayers.Bounds(0, 16, 11, null),
+			position : new OpenLayers.Pixel(0, -631)
+		}, { // bottom-right
+			size : new OpenLayers.Size(22, 18),
+			anchor : new OpenLayers.Bounds(null, 16, 0, null),
+			position : new OpenLayers.Pixel(-1238, -632)
+		}, { // stem
+			size : new OpenLayers.Size(81, 35),
+			anchor : new OpenLayers.Bounds(null, 0, 0, null),
+			position : new OpenLayers.Pixel(0, -688)
+		} ]
+	},
+	"tr" : {
+		'offset' : new OpenLayers.Pixel(-45, 0),
+		'padding' : new OpenLayers.Bounds(12, 20, 4, 8),
+		'blocks' : [ { // top-left
+			size : new OpenLayers.Size('auto', 'auto'),
+			anchor : new OpenLayers.Bounds(0, 26, 11, 0),
+			position : new OpenLayers.Pixel(0, 0)
+		}, { // top-right
+			size : new OpenLayers.Size(22, 'auto'),
+			anchor : new OpenLayers.Bounds(null, 25, 0, 0),
+			position : new OpenLayers.Pixel(-1238, 0)
+		}, { // bottom-left
+			size : new OpenLayers.Size('auto', 19),
+			anchor : new OpenLayers.Bounds(0, 16, 11, null),
+			position : new OpenLayers.Pixel(0, -631)
+		}, { // bottom-right
+			size : new OpenLayers.Size(22, 19),
+			anchor : new OpenLayers.Bounds(null, 16, 0, null),
+			position : new OpenLayers.Pixel(-1238, -631)
+		}, { // stem
+			size : new OpenLayers.Size(81, 35),
+			anchor : new OpenLayers.Bounds(0, 0, null, null),
+			position : new OpenLayers.Pixel(-215, -687)
+		} ]
+	},
+	"bl" : {
+		'offset' : new OpenLayers.Pixel(45, 0),
+		'padding' : new OpenLayers.Bounds(12, 3, 4, 25),
+		'blocks' : [ { // top-left
+			size : new OpenLayers.Size('auto', 'auto'),
+			anchor : new OpenLayers.Bounds(0, 10, 11, 16),
+			position : new OpenLayers.Pixel(0, 0)
+		}, { // top-right
+			size : new OpenLayers.Size(22, 'auto'),
+			anchor : new OpenLayers.Bounds(null, 11, 0, 16),
+			position : new OpenLayers.Pixel(-1238, 0)
+		}, { // bottom-left
+			size : new OpenLayers.Size('auto', 21),
+			anchor : new OpenLayers.Bounds(0, 0, 11, null),
+			position : new OpenLayers.Pixel(0, -629)
+		}, { // bottom-right
+			size : new OpenLayers.Size(22, 21),
+			anchor : new OpenLayers.Bounds(null, 0, 0, null),
+			position : new OpenLayers.Pixel(-1238, -629)
+		}, { // stem
+			size : new OpenLayers.Size(81, 33),
+			anchor : new OpenLayers.Bounds(null, null, 0, 0),
+			position : new OpenLayers.Pixel(-101, -674)
+		} ]
+	},
+	"br" : {
+		'offset' : new OpenLayers.Pixel(-44, 0),
+		'padding' : new OpenLayers.Bounds(12, 3, 4, 25),
+		'blocks' : [ { // top-left
+			size : new OpenLayers.Size('auto', 'auto'),
+			anchor : new OpenLayers.Bounds(0, 11, 11, 16),
+			position : new OpenLayers.Pixel(0, 0)
+		}, { // top-right
+			size : new OpenLayers.Size(22, 'auto'),
+			anchor : new OpenLayers.Bounds(null, 11, 0, 16),
+			position : new OpenLayers.Pixel(-1238, 0)
+		}, { // bottom-left
+			size : new OpenLayers.Size('auto', 21),
+			anchor : new OpenLayers.Bounds(0, 0, 11, null),
+			position : new OpenLayers.Pixel(0, -629)
+		}, { // bottom-right
+			size : new OpenLayers.Size(22, 21),
+			anchor : new OpenLayers.Bounds(null, 0, 0, null),
+			position : new OpenLayers.Pixel(-1238, -629)
+		}, { // stem
+			size : new OpenLayers.Size(81, 33),
+			anchor : new OpenLayers.Bounds(0, null, null, 0),
+			position : new OpenLayers.Pixel(-311, -674)
+		} ]
+	}
+};

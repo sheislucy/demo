@@ -40,6 +40,12 @@
 				rel="tooltip">
 				<i class="icon-map-marker"></i>
 			</button>
+			<button
+				class="btn mv <c:if test="${param.viewType eq 'ir'}">active</c:if>"
+				data-href="<c:url value="/map" />" data-original-title="信息登记"
+				rel="tooltip">
+				<i class="icon-user"></i>
+			</button>
 		</div>
 	</div>
 </div>

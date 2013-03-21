@@ -291,7 +291,7 @@ var showMarker = function(evt) {
 		lonlat = new OpenLayers.LonLat(mouseLonlatOnClick.lon,
 				mouseLonlatOnClick.lat);
 	}
-	$.getJSON(web_context + '/map/' + dbMapId + "/feature"
+	$.getJSON(web_context + '/map/' + dbMapId + "/feature/"
 			+ feature.data.dbFeatureId + "/marker", function(data) {
 		if (data && data.resultCode == 'SUCCESS') {
 			var popup = new MyMarker("myPopup", lonlat, new OpenLayers.Size(
