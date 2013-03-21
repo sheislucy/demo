@@ -30,7 +30,7 @@ public class MapController {
 		List<FilterElementVo> filters = new ArrayList<FilterElementVo>();
 		FilterElementVo f = new FilterElementVo();
 		f.setType("category");
-		f.setLabel("最新");
+		f.setLabel("最新 - 土地利用总图");
 		f.setTypeLabel("分类");
 		f.getItems().add(new DropdownItem("map03", "土地利用总图"));
 		f.getItems().add(new DropdownItem("map05", "规划平面图"));

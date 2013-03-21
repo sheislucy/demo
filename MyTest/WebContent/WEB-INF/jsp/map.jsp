@@ -8,8 +8,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Demo of XXX</title>
 <link rel="stylesheet" type="text/css"
-	href="<c:url value="/css/myMap.css" />" />
-<link rel="stylesheet" type="text/css"
 	href="<c:url value="/css/bootstrap.css" />" />
 <link rel="stylesheet" type="text/css"
 	href="<c:url value="/css/myTest-base.css" />" />
@@ -23,7 +21,6 @@
 	src="<c:url value="/js/myTest.init.js" />"></script>
 <script type="text/javascript"
 	src="<c:url value="/js/lib/OpenLayers.js" />"></script>
-<%-- <script type="text/javascript" src="<c:url value="/js/myFeature.js" />"></script> --%>
 <script type="text/javascript" src="<c:url value="/js/myMarker.js" />"></script>
 <script type="text/javascript" src="<c:url value="/js/myMap.js" />"></script>
 </head>
@@ -48,8 +45,6 @@
 	<script type="text/javascript">
 		adjustWebWidth();
 	</script>
-	<script type="text/javascript"
-		src="<c:url value="/js/lib/Rico/Corner.js" />"></script>
 	<script type="text/javascript" src="<c:url value="/js/myTest.op.js" />"></script>
 	<script type="text/javascript" src="<c:url value="/js/bootstrap.js" />"></script>
 </body>

@@ -73,6 +73,8 @@ MapManager.prototype.genMap = function(mapMeta, hotspotMeta) {
 	}
 	this.map = new Map('explore-map', {
 		projection : "EPSG:3857",
+		controls: [],
+        fractionalZoom: true
 	});
 	this.dbMapId = mapMeta.mapId;
 	this.map.layers = new Array();
@@ -223,17 +225,6 @@ MapManager.prototype.genMap = function(mapMeta, hotspotMeta) {
 	vectorLayer.addFeatures(featureMgr.genPoints(points));
 	vectorLayer.addFeatures(polygonFeatures);
 
-	this.map.addLayers([ graphic1, vectorLayer ]);
-	if (this.map.layers && this.map.layers.length > 1) {
-		var switcher = new OpenLayers.Control.LayerSwitcher({
-			roundedCorner : true,
-			roundedCornerColor : "#ADD8E6",
-		});
-		this.map.addControl(switcher);
-	}
-
-	this.map.zoomToMaxExtent();
-
 	// display coordinate of mouse position-------start------------------
 	/*
 	 * this.map.addControl(new OpenLayers.Control.MousePosition());
@@ -253,8 +244,17 @@ MapManager.prototype.genMap = function(mapMeta, hotspotMeta) {
 		'featureunselected' : hideMarker
 	});
 
-	this.map.addControl(selectController);
-	this.map.addControl(new OpenLayers.Control.MousePosition());
+	var switcher = new OpenLayers.Control.LayerSwitcher({
+		roundedCorner : false,
+		roundedCornerColor : "#ADD8E6",
+	});
+
+	this.map.addLayers([ graphic1, vectorLayer ]);
+	this.map.addControls([ switcher, selectController,
+			new OpenLayers.Control.MousePosition(),
+			new OpenLayers.Control.Navigation(),
+			new OpenLayers.Control.PanZoomBar() ]);
+	this.map.zoomToMaxExtent();
 	this.map.events.register("mousemove", this.map, function(e) {
 		mouseLonlat = e.object.getLonLatFromPixel(e.xy);
 	});

@@ -16,7 +16,7 @@ public class MarkerController {
 
 	@RequestMapping(value = "/map/{mapId}/feature/{featureId}/marker", method = RequestMethod.GET)
 	public @ResponseBody
-	AjaxResult getMarkersInformation(@PathVariable("mapId") String mapId,
+	AjaxResult getMarkerInformation(@PathVariable("mapId") String mapId,
 			@PathVariable("featureId") String featureId,
 			HttpServletRequest request) {
 		StringBuilder innerHtml = new StringBuilder(

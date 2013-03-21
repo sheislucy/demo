@@ -137,7 +137,7 @@
 		var city = $(this).attr('title').toLowerCase();
 		op.city_picker_geo_callback(city);
 	});
-	noNeedAdjustWebWidth('${param.noNeed}')
+	noNeedAdjustWebWidth('${param.noNeed}');
 	setHeaderTab('${param.tab}');
 	$('.brand').find('.icon-home').hide();
 	$('.brand').mouseenter(function() {
