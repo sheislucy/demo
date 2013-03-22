@@ -305,23 +305,25 @@ div.olControlSaveFeaturesItemInactive {
     position: absolute;
     top: 25px;
     right: 0;
-    width: 20em;
+    width: 16em;
     font-family: sans-serif;
     font-weight: bold;
     margin-top: 3px;
     margin-left: 3px;
     margin-bottom: 3px;
     font-size: smaller;
-    color: white;
-    background-color: transparent;
+    -moz-box-shadow: -2px 2px 3px #909090;
+	-webkit-box-shadow: -2px 2px 3px #909090;
+	box-shadow: -2px 2px 3px #909090;
 }
 
 .olControlLayerSwitcher .layersDiv {
     padding-top: 5px;
-    padding-left: 10px;
-    padding-bottom: 5px;
-    padding-right: 10px;
-    background-color: darkblue;
+	padding-left: 10px;
+	padding-bottom: 10px;
+	padding-right: 10px;
+	background-color: #fafafa;
+	opacity: 0.95;
 }
 
 .olControlLayerSwitcher .layersDiv .baseLbl,

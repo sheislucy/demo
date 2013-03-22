@@ -67,7 +67,7 @@ MyMarker.prototype.updateBlocks = function() {
 
 		block.image.style.width = block.div.style.width;
 		block.image.style.height = block.div.style.height;
-		block.image.style.opacity = 0.85;
+		block.image.style.opacity = 0.9;
 	}
 };
 

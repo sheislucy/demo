@@ -59,8 +59,8 @@ var featureMgr = new FeatureManager();
 
 // map generator-----------start--------------
 var MapManager = function() {
-	$.getScript(web_context + "/js/myMarker.js");
-	$.getScript(web_context + "/js/myLayerSwitcher.js");
+	// $.getScript(web_context + "/js/myLayerSwitcher.js");
+	// $.getScript(web_context + "/js/myMarker.js");
 };
 
 /**
@@ -161,8 +161,8 @@ MapManager.prototype.genMap = function(mapMeta, hotspotMeta) {
 				pointRadius : 20,
 				strokeWidth : 2,
 				srokeColor : '#9C9C9C',
-				externalGraphic : web_context + '/img/material/a17.png',
-				graphicXOffset : -2,
+				externalGraphic : web_context + '/img/material/a10.png',
+				graphicXOffset : -20,
 				graphicYOffset : -38
 			}
 		}), new Rule({
@@ -197,8 +197,8 @@ MapManager.prototype.genMap = function(mapMeta, hotspotMeta) {
 				pointRadius : 24,
 				strokeWidth : 2,
 				srokeColor : '#9C9C9C',
-				externalGraphic : web_context + '/img/material/a14.png',
-				graphicXOffset : -2,
+				externalGraphic : web_context + '/img/material/a10.png',
+				graphicXOffset : -23.5,
 				graphicYOffset : -45
 			}
 		}), new Rule({
@@ -245,16 +245,14 @@ MapManager.prototype.genMap = function(mapMeta, hotspotMeta) {
 		'featureunselected' : hideMarker
 	});
 
-	var switcher = new OpenLayers.Control.LayerSwitcher({
-		roundedCorner : false,
-		roundedCornerColor : "#ADD8E6",
+	var switcher = new MyLayerSwitcher({
+		roundedCorner : false
 	});
 
 	this.map.addLayers([ graphic1, vectorLayer ]);
 	this.map.addControls([ switcher, selectController,
 			new OpenLayers.Control.MousePosition(),
-			new OpenLayers.Control.Navigation(),
-			new OpenLayers.Control.PanZoomBar() ]);
+			new OpenLayers.Control.Navigation(), new MyPanZoomBar() ]);
 	this.map.zoomToMaxExtent();
 	this.map.events.register("mousemove", this.map, function(e) {
 		mouseLonlat = e.object.getLonLatFromPixel(e.xy);
@@ -287,7 +285,7 @@ var showMarker = function(evt) {
 		if (data && data.resultCode == 'SUCCESS') {
 			var popup = new MyMarker("myPopup", lonlat, new OpenLayers.Size(
 					260, 180), data.resultData, null, false, null, web_context
-					+ "/img/material/marker02.png");
+					+ "/img/material/marker03.png");
 			popup.minSize = new OpenLayers.Size(260, 180);
 			popup.autoSize = true;
 			feature.popup = popup;
