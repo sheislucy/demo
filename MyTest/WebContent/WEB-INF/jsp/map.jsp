@@ -21,7 +21,6 @@
 	src="<c:url value="/js/myTest.init.js" />"></script>
 <script type="text/javascript"
 	src="<c:url value="/js/lib/OpenLayers.js" />"></script>
-<script type="text/javascript" src="<c:url value="/js/myMarker.js" />"></script>
 <script type="text/javascript" src="<c:url value="/js/myMap.js" />"></script>
 </head>
 <body class="front">

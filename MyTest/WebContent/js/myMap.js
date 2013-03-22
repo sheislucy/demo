@@ -59,7 +59,8 @@ var featureMgr = new FeatureManager();
 
 // map generator-----------start--------------
 var MapManager = function() {
-
+	$.getScript(web_context + "/js/myMarker.js");
+	$.getScript(web_context + "/js/myLayerSwitcher.js");
 };
 
 /**
@@ -73,8 +74,8 @@ MapManager.prototype.genMap = function(mapMeta, hotspotMeta) {
 	}
 	this.map = new Map('explore-map', {
 		projection : "EPSG:3857",
-		controls: [],
-        fractionalZoom: true
+		controls : [],
+		fractionalZoom : true
 	});
 	this.dbMapId = mapMeta.mapId;
 	this.map.layers = new Array();
