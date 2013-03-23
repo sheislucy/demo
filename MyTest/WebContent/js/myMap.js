@@ -164,7 +164,7 @@ MapManager.prototype.genMap = function(mapMeta, hotspotMeta) {
 				externalGraphic : web_context + '/img/material/a10.png',
 				graphicXOffset : -20,
 				graphicYOffset : -38,
-				cursor: "pointer"
+				cursor : "pointer"
 			}
 		}), new Rule({
 			filter : new Filter.Comparison({
@@ -201,7 +201,7 @@ MapManager.prototype.genMap = function(mapMeta, hotspotMeta) {
 				externalGraphic : web_context + '/img/material/a10.png',
 				graphicXOffset : -23.5,
 				graphicYOffset : -45,
-				cursor: "pointer"
+				cursor : "pointer"
 			}
 		}), new Rule({
 			filter : new Filter.Comparison({
@@ -219,20 +219,14 @@ MapManager.prototype.genMap = function(mapMeta, hotspotMeta) {
 		}) ]
 	});
 
-	var pointLayer = new OpenLayers.Layer.Vector(mapMeta.mapName, {
+	var vectorLayer = new OpenLayers.Layer.Vector(mapMeta.mapName, {
 		styleMap : new OpenLayers.StyleMap({
 			"default" : defaultStyle,
 			"select" : selectStyle
 		}),
 	});
-	var zoneLayer = new OpenLayers.Layer.Vector(mapMeta.mapName, {
-		styleMap : new OpenLayers.StyleMap({
-			"default" : defaultStyle,
-			"select" : selectStyle
-		}),
-	});
-	pointLayer.addFeatures(featureMgr.genPoints(points));
-	zoneLayer.addFeatures(polygonFeatures);
+	vectorLayer.addFeatures(featureMgr.genPoints(points));
+	vectorLayer.addFeatures(polygonFeatures);
 
 	// display coordinate of mouse position-------start------------------
 	/*
@@ -242,21 +236,17 @@ MapManager.prototype.genMap = function(mapMeta, hotspotMeta) {
 	 * OpenLayers.Util.getElement("coords").innerHTML = position; });
 	 */
 	// display coordinate of mouse position-------end------------------
-	var highlightCtrlr = new OpenLayers.Control.SelectFeature(zoneLayer, {
+	var highlightCtrlr = new OpenLayers.Control.SelectFeature(vectorLayer, {
 		hover : true,
 		highlightOnly : true,
-		renderIntent : "temporary"
+		renderIntent : "temporary",
+		geometryTypes : "OpenLayers.Geometry.Polygon"
 	});
 	// select points
-	var selectCtrlr = new OpenLayers.Control.SelectFeature([ pointLayer,
-			zoneLayer ], {
+	var selectCtrlr = new OpenLayers.Control.SelectFeature(vectorLayer, {
 		clickout : true
 	});
-	pointLayer.events.on({
-		'featureselected' : showMarker,
-		'featureunselected' : hideMarker
-	});
-	zoneLayer.events.on({
+	vectorLayer.events.on({
 		'featureselected' : showMarker,
 		'featureunselected' : hideMarker
 	});
@@ -265,7 +255,7 @@ MapManager.prototype.genMap = function(mapMeta, hotspotMeta) {
 		roundedCorner : false
 	});
 
-	this.map.addLayers([ graphic1, pointLayer, zoneLayer ]);
+	this.map.addLayers([ graphic1, vectorLayer ]);
 	this.map.addControls([ switcher, highlightCtrlr, selectCtrlr,
 			new OpenLayers.Control.MousePosition(),
 			new OpenLayers.Control.Navigation(), new MyPanZoomBar() ]);
