@@ -3,7 +3,7 @@ MyPanZoomBar = OpenLayers.Class(OpenLayers.Control.PanZoomBar, {
 	CLASS_NAME : "MyPanZoomBar"
 });
 
-MyPanZoomBar.prototype.zoomStopHeight = 22;
+MyPanZoomBar.prototype.zoomStopHeight = 45;
 
 MyPanZoomBar.prototype._addButton = function(id, imgLocation, xy, sz) {
 	var btn = OpenLayers.Util.createAlphaImageDiv(this.id + "_" + id, xy, sz,
@@ -57,7 +57,7 @@ MyPanZoomBar.prototype.draw = function(px) {
 			sz.h * 3 + 5), sz);
 	centered = this._addZoomBar(centered.add(sz.w, sz.h * 4 + 5));
 	this._addButton("zoomout", dir + "zoom-minus-mini.png", centered.add(0,
-			-(sz.h - 6)), sz);
+			-(sz.h + 16)), sz);
 	return this.div;
 };
 
@@ -87,7 +87,7 @@ MyPanZoomBar.prototype._addZoomBar = function(centered) {
 
 	var sz = {
 		w : this.zoomStopWidth,
-		h : this.zoomStopHeight * (this.map.getNumZoomLevels() - 1) + 10
+		h : this.zoomStopHeight * (this.map.getNumZoomLevels() - 1) + 11
 	};
 	var imgLocation = web_context + "/img/material/zoombar.png";
 	var div = null;

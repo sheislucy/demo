@@ -495,7 +495,7 @@ OpenLayers.Feature.Vector.style = {
         hoverPointRadius: 1,
         hoverPointUnit: "%",
         pointerEvents: "visiblePainted",
-        cursor: "inherit",
+        cursor: "pointer",
         fontColor: "#000000",
         labelAlign: "cm",
         labelOutlineColor: "white",

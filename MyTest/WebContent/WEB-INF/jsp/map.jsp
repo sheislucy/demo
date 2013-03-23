@@ -24,7 +24,8 @@
 <script type="text/javascript"
 	src="<c:url value="/js/myLayerSwitcher.js" />"></script>
 <script type="text/javascript" src="<c:url value="/js/myMarker.js" />"></script>
-<script type="text/javascript" src="<c:url value="/js/myPanZoomBar.js" />"></script>
+<script type="text/javascript"
+	src="<c:url value="/js/myPanZoomBar.js" />"></script>
 <script type="text/javascript" src="<c:url value="/js/myMap.js" />"></script>
 </head>
 <body class="front">
@@ -48,6 +49,11 @@
 	<script type="text/javascript">
 		adjustWebWidth();
 	</script>
+	<!-- <script type="text/javascript">
+		$(function() {
+			flyZoomBarAndSwitcher();
+		});
+	</script> -->
 	<script type="text/javascript" src="<c:url value="/js/myTest.op.js" />"></script>
 	<script type="text/javascript" src="<c:url value="/js/bootstrap.js" />"></script>
 </body>

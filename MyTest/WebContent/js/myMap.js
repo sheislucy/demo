@@ -146,7 +146,7 @@ MapManager.prototype.genMap = function(mapMeta, hotspotMeta) {
 	var defaultStyle = new OpenLayers.Style({
 		pointRadius : 10,
 		strokeWidth : 3,
-		strokeOpacity : 0.7,
+		strokeOpacity : 0.6,
 		strokeColor : "navy",
 		fillColor : "#ffcc66",
 		fillOpacity : 1
@@ -163,7 +163,8 @@ MapManager.prototype.genMap = function(mapMeta, hotspotMeta) {
 				srokeColor : '#9C9C9C',
 				externalGraphic : web_context + '/img/material/a10.png',
 				graphicXOffset : -20,
-				graphicYOffset : -38
+				graphicYOffset : -38,
+				cursor: "pointer"
 			}
 		}), new Rule({
 			filter : new Filter.Comparison({
@@ -173,10 +174,10 @@ MapManager.prototype.genMap = function(mapMeta, hotspotMeta) {
 			}),
 			symbolizer : {
 				strokeWidth : 2,
-				strokeOpacity : 0.7,
+				strokeOpacity : 0.6,
 				strokeColor : "navy",
 				fillColor : "#5571DD",
-				fillOpacity : 0.5
+				fillOpacity : 0.2
 			}
 		}) ]
 	});
@@ -199,7 +200,8 @@ MapManager.prototype.genMap = function(mapMeta, hotspotMeta) {
 				srokeColor : '#9C9C9C',
 				externalGraphic : web_context + '/img/material/a10.png',
 				graphicXOffset : -23.5,
-				graphicYOffset : -45
+				graphicYOffset : -45,
+				cursor: "pointer"
 			}
 		}), new Rule({
 			filter : new Filter.Comparison({
@@ -210,21 +212,27 @@ MapManager.prototype.genMap = function(mapMeta, hotspotMeta) {
 			symbolizer : {
 				strokeWidth : 2,
 				strokeOpacity : 0.7,
-				strokeColor : "navy",
+				strokeColor : "#66cccc",
 				fillColor : "#ED57B1",
-				fillOpacity : 0.6
+				fillOpacity : 0.2
 			}
 		}) ]
 	});
 
-	var vectorLayer = new OpenLayers.Layer.Vector(mapMeta.mapName, {
+	var pointLayer = new OpenLayers.Layer.Vector(mapMeta.mapName, {
 		styleMap : new OpenLayers.StyleMap({
 			"default" : defaultStyle,
 			"select" : selectStyle
 		}),
 	});
-	vectorLayer.addFeatures(featureMgr.genPoints(points));
-	vectorLayer.addFeatures(polygonFeatures);
+	var zoneLayer = new OpenLayers.Layer.Vector(mapMeta.mapName, {
+		styleMap : new OpenLayers.StyleMap({
+			"default" : defaultStyle,
+			"select" : selectStyle
+		}),
+	});
+	pointLayer.addFeatures(featureMgr.genPoints(points));
+	zoneLayer.addFeatures(polygonFeatures);
 
 	// display coordinate of mouse position-------start------------------
 	/*
@@ -234,13 +242,21 @@ MapManager.prototype.genMap = function(mapMeta, hotspotMeta) {
 	 * OpenLayers.Util.getElement("coords").innerHTML = position; });
 	 */
 	// display coordinate of mouse position-------end------------------
-	// select points
-	var selectController = new OpenLayers.Control.SelectFeature(vectorLayer, {
-		clickout : true,
-		toggle : false,
-		hover : false
+	var highlightCtrlr = new OpenLayers.Control.SelectFeature(zoneLayer, {
+		hover : true,
+		highlightOnly : true,
+		renderIntent : "temporary"
 	});
-	vectorLayer.events.on({
+	// select points
+	var selectCtrlr = new OpenLayers.Control.SelectFeature([ pointLayer,
+			zoneLayer ], {
+		clickout : true
+	});
+	pointLayer.events.on({
+		'featureselected' : showMarker,
+		'featureunselected' : hideMarker
+	});
+	zoneLayer.events.on({
 		'featureselected' : showMarker,
 		'featureunselected' : hideMarker
 	});
@@ -249,15 +265,16 @@ MapManager.prototype.genMap = function(mapMeta, hotspotMeta) {
 		roundedCorner : false
 	});
 
-	this.map.addLayers([ graphic1, vectorLayer ]);
-	this.map.addControls([ switcher, selectController,
+	this.map.addLayers([ graphic1, pointLayer, zoneLayer ]);
+	this.map.addControls([ switcher, highlightCtrlr, selectCtrlr,
 			new OpenLayers.Control.MousePosition(),
 			new OpenLayers.Control.Navigation(), new MyPanZoomBar() ]);
 	this.map.zoomToMaxExtent();
 	this.map.events.register("mousemove", this.map, function(e) {
 		mouseLonlat = e.object.getLonLatFromPixel(e.xy);
 	});
-	selectController.activate();
+	highlightCtrlr.activate();
+	selectCtrlr.activate();
 };
 
 var mouseLonlat = {};
@@ -304,13 +321,33 @@ var getMapAndHotSpot = function(mapId) {
 			hotspotMeta.points = data.resultData.points;
 			hotspotMeta.polygons = data.resultData.polygons;
 
-			var map_width = $('#explore-map').innerWidth();
-			var map_height = map_width / mapMeta.width * mapMeta.height;
+			// var map_width = $('#explore-map').innerWidth();
+			// var map_height = map_width / mapMeta.width * mapMeta.height;
+			// $('#explore-map').height(map_height);
+			var map_height = $(window).innerHeight();
 			$('#explore-map').height(map_height);
-			mapMeta.view_width = $('#explore-map').innerWidth();
+			var map_width = map_height / mapMeta.height * mapMeta.width;
+
+			mapMeta.view_width = map_width;
 			mapMeta.view_height = $('#explore-map').innerHeight();
 			var mapManager = new MapManager();
 			mapManager.genMap(mapMeta, hotspotMeta);
+			flyZoomBarAndSwitcher();
 		}
 	});
+};
+
+var flyZoomBarAndSwitcher = function() {
+	var zoomDiv = $('div[id^=MyPanZoomBar]');
+	if (zoomDiv && zoomDiv.length > 0) {
+		zoomDiv[0].style.position = "fixed";
+		zoomDiv[0].style.top = 170 + "px";
+		zoomDiv[0].style.left = 40 + "px";
+	}
+	var switcherDiv = $('div[id^=OpenLayers\\.Control\\.LayerSwitcher]');
+	if (switcherDiv && switcherDiv.length > 0) {
+		switcherDiv[0].style.position = "fixed";
+		switcherDiv[0].style.top = 170 + "px";
+		switcherDiv[0].style.right = 80 + "px";
+	}
 };
