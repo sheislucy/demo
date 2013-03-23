@@ -39,7 +39,7 @@
 			<jsp:param name="viewType" value="mv" />
 		</jsp:include>
 		<div id="map-view" class="board content-wrapper p-r">
-			<div id="explore-map" style="width: 100%; min-height: 600px">
+			<div id="explore-map" style="width: 100%; min-height: 300px">
 				<script type="text/javascript">
 					getMapAndHotSpot("init");
 				</script>

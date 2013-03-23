@@ -314,15 +314,15 @@ var getMapAndHotSpot = function(mapId) {
 			// var map_width = $('#explore-map').innerWidth();
 			// var map_height = map_width / mapMeta.width * mapMeta.height;
 			// $('#explore-map').height(map_height);
-			var map_height = $(window).innerHeight();
+			var map_height = $(window).innerHeight() * 0.75;
 			$('#explore-map').height(map_height);
 			var map_width = map_height / mapMeta.height * mapMeta.width;
 
 			mapMeta.view_width = map_width;
-			mapMeta.view_height = $('#explore-map').innerHeight();
+			mapMeta.view_height = map_height;
 			var mapManager = new MapManager();
 			mapManager.genMap(mapMeta, hotspotMeta);
-			flyZoomBarAndSwitcher();
+			//flyZoomBarAndSwitcher();
 		}
 	});
 };
@@ -331,13 +331,13 @@ var flyZoomBarAndSwitcher = function() {
 	var zoomDiv = $('div[id^=MyPanZoomBar]');
 	if (zoomDiv && zoomDiv.length > 0) {
 		zoomDiv[0].style.position = "fixed";
-		zoomDiv[0].style.top = 170 + "px";
-		zoomDiv[0].style.left = 40 + "px";
+		zoomDiv[0].style.top = 20 + "%";
+		zoomDiv[0].style.left = 5 + "%";
 	}
 	var switcherDiv = $('div[id^=OpenLayers\\.Control\\.LayerSwitcher]');
 	if (switcherDiv && switcherDiv.length > 0) {
 		switcherDiv[0].style.position = "fixed";
-		switcherDiv[0].style.top = 170 + "px";
-		switcherDiv[0].style.right = 80 + "px";
+		switcherDiv[0].style.top = 20 + "%";
+		switcherDiv[0].style.right = 8 + "%";
 	}
 };
