@@ -1,6 +1,5 @@
 /* web context variable setup */
-var web_context = '/MyTest';
-
+var web_context = "";
 
 /* init for jquery.pnotify */
 $(function(){

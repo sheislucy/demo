@@ -17,13 +17,14 @@ MyMarker.prototype.createBlocks = function() {
 	var block = {};
 	var divId = this.id + '_FrameDecorationDiv';
 	block.div = OpenLayers.Util.createDiv(divId, null, null, null, "absolute",
-			null, "hidden", null);
-	var imgId = this.id + '_FrameDecorationImg';
-
-	block.image = OpenLayers.Util.createImage(imgId, null, this.imageSize,
-			this.imageSrc, "absolute", null, null, null);
-
-	block.div.appendChild(block.image);
+			"1px solid #aaa", "hidden", 0.6);
+	block.div.style.cssText = "background: #f5f5f5; border: 1px solid #aaa; opacity: 0.7;";
+	if (this.imageSrc && this.imageSrc.length > 0) {
+		var imgId = this.id + '_FrameDecorationImg';
+		block.image = OpenLayers.Util.createImage(imgId, null, this.imageSize,
+				this.imageSrc, "absolute", null, null, null);
+		block.div.appendChild(block.image);
+	}
 	this.blocks.push(block);
 	this.groupDiv.appendChild(block.div);
 };
@@ -59,15 +60,16 @@ MyMarker.prototype.updateBlocks = function() {
 		block.div.style.right = (r != null) ? r + 'px' : '';
 		block.div.style.top = (t != null) ? t + 'px' : '';
 
-		block.image.style.left = positionBlock.position.x + 'px';
-		block.image.style.top = positionBlock.position.y + 'px';
+		if (block.image) {
+			block.image.style.left = positionBlock.position.x + 'px';
+			block.image.style.top = positionBlock.position.y + 'px';
+			block.image.style.width = block.div.style.width;
+			block.image.style.height = block.div.style.height;
+			block.image.style.opacity = 0.9;
+		}
 
 		this.contentDiv.style.left = this.padding.left + "px";
 		this.contentDiv.style.top = this.padding.top + "px";
-
-		block.image.style.width = block.div.style.width;
-		block.image.style.height = block.div.style.height;
-		block.image.style.opacity = 0.9;
 	}
 };
 

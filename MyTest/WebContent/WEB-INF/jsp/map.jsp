@@ -15,6 +15,10 @@
 	href="<c:url value="/css/myTest-theme.css" />" />
 <link rel="stylesheet" type="text/css"
 	href="<c:url value="/css/validationEngine.bootstrap.css" />" />
+<link rel="stylesheet" type="text/css"
+	href="<c:url value="/css/map.css" />" />
+<link rel="stylesheet" type="text/css"
+	href="<c:url value="/css/PIE.htc" />" />
 <script type="text/javascript"
 	src="<c:url value="/js/jquery.1.7.1.js" />"></script>
 <script type="text/javascript"
@@ -56,5 +60,18 @@
 	</script> -->
 	<script type="text/javascript" src="<c:url value="/js/myTest.op.js" />"></script>
 	<script type="text/javascript" src="<c:url value="/js/bootstrap.js" />"></script>
+
+	<div id="markerTemplate" class="hide">
+		<ul id="primary">
+			<li id="host"><span>户主：</span><span id="content"></span></li>
+			<li id="address"><span>住址：</span><span id="content"></span></li>
+			<li id="job"><span>家庭主要从事：</span><span id="content"></span></li>
+		</ul>
+		<ul id="member">
+			<li id="relation"><span id="content"></span></li>
+			<li id="name"><span id="content"></span></li>
+			<li id="job"><span>现从事：</span><span id="content"></span></li>
+		</ul>
+	</div>
 </body>
 </html>

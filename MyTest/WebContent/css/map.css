@@ -1,0 +1,26 @@
+@CHARSET "UTF-8";
+
+input[type="text"],input[type="password"],textarea {
+	outline-style: none;
+	-webkit-appearance: none;
+}
+
+ul,ol {
+	list-style: none;
+	-webkit-margin-before: 0em;
+	-webkit-margin-after: 0em;
+	-webkit-padding-start: 0em;
+}
+
+#markerTemplate {
+	font-size: .8em;
+	width: 260px;
+}
+
+.hide {
+	display: none;
+}
+
+#markerTemplate ul {
+	margin: 0;
+}

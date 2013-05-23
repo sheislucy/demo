@@ -2,6 +2,7 @@
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://myTest.net/functions" prefix="f"%>
+<%-- <input id="webContext" type="hidden" value="<c:out value="${pageContext.request.contextPath}"/>" /> --%>
 <div class="navbar navbar-fixed-top">
 	<div class="navbar-inner">
 		<div class="container content-wrapper">
@@ -15,14 +16,6 @@
 			</span>
 			</a>
 			<div class="nav-collapse">
-				<ul class="nav">
-					<%-- <li id="nav-profiles"><a href="<c:url value="/profiles" />">八哥八姐</a>
-					</li>
-					<li id="nav-create"><a href="<c:url value="/spots/create" />">我要八卦</a>
-					</li>
-					<li id="nav-apps"><a href="<c:url value="/apps" />"
-						title="移动客户端">移动客户端</a></li> --%>
-				</ul>
 				<c:choose>
 					<c:when test="${empty signInUser}">
 						<ul class="nav pull-right">
@@ -40,8 +33,6 @@
 							<li class="divider-vertical"></li>
 							<li><a href="#">登录</a></li>
 							<li><a href="#">注册</a></li>
-							<%-- <li><a href="#sign-in-modal" data-toggle="modal">登录</a></li>
-							<li><a href="<c:url value="/signup" />">注册</a></li> --%>
 						</ul>
 					</c:when>
 					<c:otherwise>
@@ -50,9 +41,6 @@
 								data-toggle="dropdown" href="#"> 关于 <b class="caret"></b>
 							</a>
 								<ul class="dropdown-menu">
-									<!-- <li><a href="#">关于</a></li> -->
-									<li><a href="#">开发工具</a></li>
-									<!-- <li><a href="#">开发动态</a></li> -->
 									<li class="divider"></li>
 									<li><a href="#">帮助</a></li>
 									<li><a href="#">反馈</a></li>

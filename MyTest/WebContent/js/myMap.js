@@ -158,12 +158,12 @@ MapManager.prototype.genMap = function(mapMeta, hotspotMeta) {
 				value : "pointDefault"
 			}),
 			symbolizer : {
-				pointRadius : 20,
+				pointRadius : 15,
 				strokeWidth : 2,
 				srokeColor : '#9C9C9C',
-				externalGraphic : web_context + '/img/material/a10.png',
-				graphicXOffset : -20,
-				graphicYOffset : -38,
+				externalGraphic : web_context + '/img/material/a20.png',
+				graphicXOffset : -15,
+				graphicYOffset : -30,
 				cursor : "pointer"
 			}
 		}), new Rule({
@@ -195,12 +195,12 @@ MapManager.prototype.genMap = function(mapMeta, hotspotMeta) {
 				value : "pointDefault"
 			}),
 			symbolizer : {
-				pointRadius : 24,
+				pointRadius : 15,
 				strokeWidth : 2,
 				srokeColor : '#9C9C9C',
-				externalGraphic : web_context + '/img/material/a10.png',
-				graphicXOffset : -23.5,
-				graphicYOffset : -45,
+				externalGraphic : web_context + '/img/material/a23.png',
+				graphicXOffset : -15,
+				graphicYOffset : -30,
 				cursor : "pointer"
 			}
 		}), new Rule({
@@ -288,17 +288,41 @@ var showMarker = function(evt) {
 	}
 	var map = this.map;
 	$.getJSON(web_context + '/map/' + "map03" + "/feature/"
-			+ feature.data.dbFeatureId + "/marker", function(data) {
-		if (data && data.resultCode == 'SUCCESS') {
-			var popup = new MyMarker("myPopup", lonlat, new OpenLayers.Size(
-					260, 180), data.resultData, null, false, null, web_context
-					+ "/img/material/marker03.png");
-			popup.minSize = new OpenLayers.Size(260, 180);
-			popup.autoSize = true;
-			feature.popup = popup;
-			map.addPopup(popup);
-		}
-	});
+			+ feature.data.dbFeatureId + "/marker",
+			function(data) {
+				if (data && data.resultCode == 'SUCCESS') {
+					/*
+					 * var popup = new MyMarker("myPopup", lonlat, new
+					 * OpenLayers.Size( 260, 180), data.resultData, null, false,
+					 * null, web_context + "/img/material/marker03.png");
+					 */
+					var result = data.resultData;
+					var markerHTML = $("#markerTemplate").clone();
+					var memberHTML = $("#markerTemplate > #member").clone();
+					markerHTML.removeClass("hide");
+					markerHTML.find("#primary > #host > #content").html(
+							result.host);
+					markerHTML.find("#primary > #address > #content").html(
+							result.address);
+					markerHTML.find("#primary > #job > #content").html(
+							result.business);
+					markerHTML.remove("#member");
+					for ( var i = 0; i < result.members.length; i++) {
+						memberHTML.find("#relation > #content").html(
+								result.members[i].relation);
+						memberHTML.find("#name > #content").html(result.members[i].name);
+						memberHTML.find("#job > #content").html(result.members[i].job);
+						markerHTML.append(memberHTML);
+					}
+					var popup = new MyMarker("myPopup", lonlat,
+							new OpenLayers.Size(260, 180), markerHTML[0].outerHTML,
+							null, false, null, null);
+					popup.minSize = new OpenLayers.Size(260, 180);
+					popup.autoSize = true;
+					feature.popup = popup;
+					map.addPopup(popup);
+				}
+			});
 };
 
 // map generator-----------end--------------
